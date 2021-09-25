@@ -1,0 +1,14 @@
+﻿@model DateTime?
+@using System.ComponentModel.DataAnnotations
+@using System.ComponentModel.DataAnnotations.Schema
+
+@if (ViewData.ModelMetadata.ContainerType.GetProperty(ViewData.ModelMetadata.PropertyName).CustomAttributes
+ .Any(a => (a.AttributeType == typeof(ColumnAttribute) && a.NamedArguments.Any(a2 => (string)a2.TypedValue.Value == "date")) ||
+ (a.AttributeType == typeof(DataTypeAttribute)) && a.ConstructorArguments.Single().Value is DataType.Date))
+{
+    <span data-utc-date="@(Model.HasValue ? Model.Value.ToUnixTime() : string.Empty)"></span>
+}
+else
+{
+    <span data-utc-time="@(Model.HasValue ? Model.Value.ToUnixTime() : string.Empty)"></span>
+}

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<SimpleTest.Models.User>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Web.Common;
+
+<link href="~/lib/pagedlist/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Add <i class="bi bi-plus-circle"></i></a>
+</p>
+<table class="table table-striped">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+                <a asp-action="Index"
+                   asp-route-order="@(UserSort.IsNameOrderAsc(ViewBag.Order) ? UserSort.UserSortOrder.NameAsc : UserSort.UserSortOrder.NameDesc)"
+                   class="btn btn-sm btn-light">
+                    <i class="bi @(UserSort.IsNameOrderAsc(ViewBag.Order) ? "bi-sort-alpha-down" : "bi-sort-alpha-up")"></i>
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+                <a asp-action="Index"
+                   asp-route-order="@(UserSort.IsEmailOrderAsc(ViewBag.Order) ? UserSort.UserSortOrder.EmailAsc : UserSort.UserSortOrder.EmailDesc)"
+                   class="btn btn-sm btn-light">
+                    <i class="bi @(UserSort.IsEmailOrderAsc(ViewBag.Order) ? "bi-sort-alpha-down" : "bi-sort-alpha-up")"></i>
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Birthday)
+                <a asp-action="Index"
+                   asp-route-order="@(UserSort.IsBirthdayOrderAsc(ViewBag.Order) ? UserSort.UserSortOrder.BirthdayAsc : UserSort.UserSortOrder.BirthdayDesc)"
+                   class="btn btn-sm btn-light">
+                    <i class="bi @(UserSort.IsBirthdayOrderAsc(ViewBag.Order) ? "bi-sort-numeric-down" : "bi-sort-numeric-up")"></i>
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+                <a asp-action="Index"
+                   asp-route-order="@(UserSort.IsSalaryOrderAsc(ViewBag.Order) ? UserSort.UserSortOrder.SalaryAsc : UserSort.UserSortOrder.SalaryDesc)"
+                   class="btn btn-sm btn-light">
+                    <i class="bi @(UserSort.IsSalaryOrderAsc(ViewBag.Order) ? "bi-sort-numeric-down" : "bi-sort-numeric-up")"></i>
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastModifiedDate)
+                <a asp-action="Index"
+                   asp-route-order="@(UserSort.IsLastModifiedDateOrderAsc(ViewBag.Order) ? UserSort.UserSortOrder.LastModifiedDateAsc : UserSort.UserSortOrder.LastModifiedDateDesc)"
+                   class="btn btn-sm btn-light">
+                    <i class="bi @(UserSort.IsLastModifiedDateOrderAsc(ViewBag.Order) ? "bi-sort-numeric-down" : "bi-sort-numeric-up")"></i>
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthday)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastModifiedDate)
+                </td>
+                <td class="btn-group btn-group-sm">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="bi bi-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="bi bi-info"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page, order = ViewBag.Order }))
